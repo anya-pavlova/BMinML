@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+\title{\textbf{Assignment 3}}
+\author{Anna Pavlova}
+\date{April 2016}
+
+\begin{document}
+
+\maketitle
+
+\section{}
+$$\mathrm{KL}(p||q)=\mathbb{E}_p\log\frac{p}{q} = \mathbb{E}_p\log p - \mathbb{E}_p \log q = -\mathbb{H}p - \sum_{i=1}^N\mathbb{E}_{p(\mathbf{Z}_i)}\log q(\mathbf{Z}_i) = $$ $$= -\mathbb{H}p(\mathbf{Z}) - \sum_{i=1}^N\mathbb{H}p(\mathbf{Z}_i) + \sum_{i=1}^N\mathrm{KL}(p(\mathbf{Z}_i)||q(\mathbf{Z}_i))$$
+From this identity we obtain that:
+$$q^{*}(\mathbf{Z}_i) = p(\mathbf{Z}_i) = \int p(\mathbf{Z})\prod_{j \neq i}d\mathbf{Z}_j$$
+However, according to the problem, the technique of Lagrange multipliers should be used, so let us find minimum of $\mathrm{KL}(p||q)$ using the approach (it will be equal to the initial problem statement):
+$$\delta \Big[ \mathrm{KL}(p||q) - \lambda \Big(\int q(\mathbf{Z}) d\mathbf{Z} - 1\Big) \Big] = -\int \frac{p(\mathbf{Z})}{q(\mathbf{Z})} \delta q(\mathbf{Z})d\mathbf{Z} - \lambda \int \delta q(\mathbf{Z})d\mathbf{Z} = $$
+$$= -\int \Big(\frac{p(\mathbf{Z})}{q(\mathbf{Z})} + \lambda\Big) \delta q(\mathbf{Z})d\mathbf{Z} = 0$$
+$$q(\mathbf{Z}) = -\frac{1}{\lambda}q(\mathbf{Z})$$
+
+We see that $q(\mathbf{Z}) \propto p(\mathbf{Z})$ and using the fact that both $p$ and $q$ are distributions we conclude that $p = q$.
+
+\section{}
+Let us derive the ELBO:
+$$\mathcal{L}(q) = \mathbb{E}_{q(\mathbf{Z})q(\pmb{\theta})} \log \frac{p(\mathbf{Z}, \pmb{\theta})}{q(\mathbf{Z})q(\mathbf{\theta})} = \mathbb{E}_{q(\mathbf{Z})} \log \frac{p(\mathbf{Z}, \mathbf{\pmb\theta_0})}{q(\mathbf{Z})} + \mathbb{H}q(\pmb\theta)$$
+$\mathbb{H}q(\pmb\theta)$ is infinite but constant, because entropy does not depend on shift $\pmb\theta_0$. So we can define a new function:
+$$\mathcal{\tilde{L}}(q, \pmb\theta_0) = \mathbb{E}_{q(\mathbf{Z})} \log \frac{p(\mathbf{Z}, \mathbf{\pmb\theta_0})}{q(\mathbf{Z})} = \mathcal{L}(q) + \mathrm{const}$$
+According to deriving of EM algorithm, optimizing it by $q(\pmb z)$ is equivalent to E-step, by $\pmb\theta_0$ to M-step.  
+\end{document}
